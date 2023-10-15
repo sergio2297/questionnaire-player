@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+skinparam backgroundcolor oldlace
+hide members
+hide circle
+
+class Player #RoyalBlue;text:white
+class RenderersFamily #MediumSlateBlue;text:white
+class Views #FireBrick;text:white
+
+note as N1
+    Views don't know how to render anything.
+    That's the Renderers's task.
+end note
+
+Player -> RenderersFamily : Uses
+RenderersFamily -> Views : Creates
+Player .> Views : "                  Interacts                  "
+
+@enduml
