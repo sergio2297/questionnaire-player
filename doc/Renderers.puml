@@ -1,0 +1,138 @@
+@startuml
+
+hide empty members
+
+interface RenderersFamily {
+    + contentRenderer(): ContentRenderer
+    + groupOfContentRenderer(): GroupOfContentRenderer
+    + questionRenderer(): QuestionRenderer
+}
+
+RenderersFamily -> ContentRenderer : "\t\t\t\tDefines\t\t\t\t"
+GroupOfContentRenderer <--- RenderersFamily : "Defines"
+QuestionRenderer <- RenderersFamily : "\t\t\t\tDefines\t\t\t\t"
+
+/' *************************************
+            CONTENT RENDERERS
+*************************************** '/
+
+interface ContentRenderer {
+    + render(content: Content): ContentView
+    + textRenderer(): TextRenderer
+    + imageRenderer(): ImageRenderer
+    + soundRenderer(): SoundRenderer
+    + videoRenderer(): VideoRenderer
+}
+
+interface TextRenderer {
+    + render(): TextView
+    + render(content: Text): TextView
+}
+interface ImageRenderer {
+    + render(): ImageView
+    + render(content: Image): ImageView
+}
+interface SoundRenderer {
+    + render(): SoundView
+    + render(content: Sound): SoundView
+}
+interface VideoRenderer {
+    + render(): VideoView
+    + render(content: Video): VideoView
+}
+
+ContentRenderer --> TextRenderer : "Defines"
+ContentRenderer --> ImageRenderer : "Defines"
+ContentRenderer --> SoundRenderer : "Defines"
+ContentRenderer --> VideoRenderer : "Defines"
+
+/' *************************************
+            GROUP OF CONTENT
+*************************************** '/
+
+interface GroupOfContentRenderer {
+    - contentRenderer: ContentRenderer
+    + render(): GroupOfContentView
+    + render(group: GroupOfContent): GroupOfContentView
+    - render(content: Content): ContentView
+}
+
+interface HasContentsRenderer<TYPE: HasContents> {
+    + render(): HasContentsView
+    + render(hasContents: TYPE): HasContentsView
+}
+
+HasContentsRenderer -* GroupOfContentRenderer : "\t\t\t\t\t\t\t\t"
+
+/' *************************************
+            QUESTION RENDERERS
+*************************************** '/
+
+interface QuestionRenderer {
+    + render(): QuestionView
+    + render(question: Question): QuestionView
+    + problemRenderer(): ProblemRenderer
+    + answerInputRenderer(): AnswerInput
+    + explanationRenderer(): ExplanationRenderer
+}
+
+interface ProblemRenderer {
+    + render(): ProblemView
+    + render(problem: Problem): ProblemView
+}
+
+interface AnswerInputRenderer {
+    + render(input: AnswerInput): AnswerInputView
+    + textInputRenderer(): TextAnswerInputRenderer
+    + singleSelectionInputRenderer(): singleSelectionAnswerInputRenderer
+    + multipleSelectionInputRenderer(): MultipleSelectionAnswerInputRenderer
+}
+
+interface ExplanationRenderer {
+    + render(): ExplanationView
+    + render(explanation: Explanation): ExplanationView
+}
+
+HasContentsRenderer <|.. ProblemRenderer
+HasContentsRenderer <|.. ExplanationRenderer
+ProblemRenderer <-- QuestionRenderer : "Defines"
+QuestionRenderer --> AnswerInputRenderer : "Defines"
+ExplanationRenderer <-- QuestionRenderer : "Defines"
+
+interface TextAnswerInputRenderer {
+    + render(): TextAnswerInputView
+    + render(input: TextAnswerInput): TextAnswerInputView
+}
+
+interface SingleSelectionAnswerInputRenderer {
+    + render(): SingleSelectionAnswerInputView
+    + render(input: SingleSelectionAnswerInput): SingleSelectionAnswerInputView
+}
+
+interface MultipleSelectionAnswerInputRenderer {
+    + render(): MultipleSelectionAnswerInputView
+    + render(input: MultipleSelectionAnswerInput): MultipleSelectionAnswerInputView
+}
+
+AnswerInputRenderer --> TextAnswerInputRenderer : "Defines"
+AnswerInputRenderer --> SingleSelectionAnswerInputRenderer : "Defines"
+AnswerInputRenderer --> MultipleSelectionAnswerInputRenderer : "Defines"
+
+interface SelectionAnswerInputRenderer<INPUT: SelectionAnswerInput> {
+    + render(): SelectionAnswerInputView
+    + render(input: INPUT): SelectionAnswerInputView
+    - renderChoicesOf(input: INPUT): Array<ChoiceView>
+}
+
+SingleSelectionAnswerInputRenderer ..|> SelectionAnswerInputRenderer
+MultipleSelectionAnswerInputRenderer ..|> SelectionAnswerInputRenderer
+
+interface ChoiceRenderer {
+    - contentRenderer: ContentRenderer
+    + render(): ChoiceView
+    + render(choice: Choice): ChoiceView
+}
+
+SelectionAnswerInputRenderer --* ChoiceRenderer
+
+@enduml
