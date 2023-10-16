@@ -1,21 +1,25 @@
 @startuml
-'https://plantuml.com/state-diagram
 
+left to right direction
 skinparam backgroundcolor oldlace
-hide members
-hide circle
 
-class Player #RoyalBlue;text:white
-class RenderersFamily #MediumSlateBlue;text:white
-class Views #FireBrick;text:white
+title Player Summary
+
+rectangle Player #RoyalBlue;text:white
+rectangle RenderersFamily #MediumSlateBlue;text:white
+rectangle Views #FireBrick;text:white
 
 note as N1
     Views don't know how to render anything.
     That's the Renderers's task.
 end note
 
-Player -> RenderersFamily : Uses
-RenderersFamily -> Views : Creates
-Player .> Views : "                  Interacts                  "
+Player ..> Views : "Interacts"
+Player --> RenderersFamily : Uses
+RenderersFamily --> Views : Creates
+
+
+
+'RenderersFamily  .[hidden] N1
 
 @enduml

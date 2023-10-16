@@ -1,0 +1,61 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+!include Renderers.puml
+
+remove GroupOfContentRenderer
+remove QuestionRenderer
+remove ProblemRenderer
+remove ExplanationRenderer
+remove HasContentsRenderer
+remove AnswerInputRenderer
+remove TextAnswerInputRenderer
+remove SelectionAnswerInputRenderer
+remove SingleSelectionAnswerInputRenderer
+remove MultipleSelectionAnswerInputRenderer
+remove ChoiceRenderer
+
+!include Views.puml
+remove GroupOfContentsView
+remove HasContentsView
+remove QuestionView
+remove ProblemView
+remove AnswerInputView
+remove ExplanationView
+remove ContentView
+
+title Example of Abstract Factory with Renderers
+
+TextRenderer --> TextView : Renders
+ImageRenderer --> ImageView : Renders
+SoundRenderer --> SoundView : Renders
+VideoRenderer --> VideoView : Renders
+
+
+class FrameworkRenderersFamily
+RenderersFamily <|...... FrameworkRenderersFamily
+class FrameworkContentRenderer implements ContentRenderer
+FrameworkRenderersFamily -> FrameworkContentRenderer : "\t\tDefines\t\t\t\t\t"
+
+class FrameworkTextRenderer implements TextRenderer
+class FrameworkText implements TextView
+FrameworkText <-- FrameworkTextRenderer : "Renders"
+
+class FrameworkImageRenderer implements ImageRenderer
+class FrameworkImage implements ImageView
+FrameworkImage <-- FrameworkImageRenderer : "Renders"
+
+class FrameworkSoundRenderer implements SoundRenderer
+class FrameworkSound implements SoundView
+FrameworkSound <-- FrameworkSoundRenderer : "Renders"
+
+class FrameworkVideoRenderer implements VideoRenderer
+class FrameworkVideo implements VideoView
+FrameworkVideo <-- FrameworkVideoRenderer : "Renders"
+
+FrameworkTextRenderer <-- FrameworkContentRenderer : "Defines"
+FrameworkImageRenderer <-- FrameworkContentRenderer : "Defines"
+FrameworkSoundRenderer <-- FrameworkContentRenderer : "Defines"
+FrameworkVideoRenderer <-- FrameworkContentRenderer : "Defines"
+
+@enduml

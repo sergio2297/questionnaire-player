@@ -1,0 +1,50 @@
+@startuml
+
+hide empty members
+
+title Views
+
+interface ContentView
+interface TextView {
+    + setText(text: Text)
+}
+interface ImageView {
+    + setImage(image: Image)
+}
+interface SoundView {
+    + setSound(sound: Sound)
+}
+interface VideoView {
+    + setVideo(video: Video)
+}
+interface GroupOfContentsView {
+    + add(content: ContentView)
+}
+interface HasContentsView
+
+ContentView <|.. TextView
+ContentView <|.. ImageView
+ContentView <|.. SoundView
+ContentView <|.. VideoView
+
+ContentView o- GroupOfContentsView : "\t\t\t"
+GroupOfContentsView o- HasContentsView : "\t\t\t"
+
+interface QuestionView {
+    + title: String
+}
+interface ProblemView
+interface ExplanationView
+interface AnswerInputView {
+    + getReply(): Optional<Reply<*>>
+}
+
+HasContentsView <|.. ProblemView
+HasContentsView <|.. ExplanationView
+
+ProblemView --o QuestionView
+AnswerInputView --o QuestionView
+ExplanationView --o QuestionView
+
+
+@enduml

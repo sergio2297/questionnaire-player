@@ -2,6 +2,8 @@
 
 hide empty members
 
+title Renderers
+
 interface RenderersFamily {
     + contentRenderer(): ContentRenderer
     + groupOfContentRenderer(): GroupOfContentRenderer
